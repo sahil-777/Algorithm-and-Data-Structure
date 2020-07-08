@@ -18,34 +18,31 @@ using namespace std;
 
 vector<int>adj[SIZE];
 bool visited[SIZE];
-stack<int>st;
-int In_time[SIZE];
+int parent[SIZE];
+int in_time[SIZE];
 int low[SIZE];
+
 int timer =1;
 
-void dfs(int u,int parent){
+void dfs_Bridge(int u ){
 	
 	visited[u]=1;
-	//cout<<u<<"\n";
-	In_time[u]=timer;
+	in_time[u]=timer;
 	low[u]=timer;
 	timer++;
 	
-	for(int i : adj[u]){
+	for(int child : adj[u]){
 		
-		if(i==parent)
-			continue;
-		
-		if(visited[i]==0){
+		if(visited[child]==0){
+			parent[child] = u;			
+			dfs_Bridge(child);
+			low[u]=min(low[child],low[u]);
 			
-			dfs(i,u);
-			low[u]=min(low[i],low[u]);
-			
-			if(low[i]>In_time[u])
-			cout<<i<<" --> "<<u<<"\n";
+			if(low[child]>in_time[u])
+			cout<<child<<" --> "<<u<<"\n";
 		}
-		else{
-			low[u]=min(low[i],In_time[u]);
+		else if(parent[u]!=child){
+			low[u]=min(low[child],in_time[u]);
 		}
 	}
 }
@@ -63,8 +60,14 @@ int main()
 		adj[y].push_back(x);
 	}
 	
+	for(i=1;i<=N;i++){
+		visited[i]=0;
+		parent[i]=-1;
+		low[i]=INT32_MAX;
+	}
+	
 	int s=1;
-	dfs(s,-1);
+	dfs_Bridge(s);
 	
 	return 0;
 }
