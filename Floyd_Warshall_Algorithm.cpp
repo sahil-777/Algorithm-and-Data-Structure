@@ -26,7 +26,7 @@ void floyd_warshall(int N){
         for(int i=1;i<=N;i++){
             for(int j=1;j<=N;j++){
                 
-                if(cost[i][k] + cost[k][j] < cost[i][j])  
+                if((cost[i][k] + cost[k][j] < cost[i][j]) && (cost[i][k]!=INF && cost[k][j]!=INF))  
                     cost[i][j] = cost[i][k]+cost[k][j];
             
             }
