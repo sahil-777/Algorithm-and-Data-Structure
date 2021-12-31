@@ -1,51 +1,40 @@
-
-/*
-Name : Sahil S. Velhal
-Github id: Sahil-777
-*/
-
-//Seive Of Eratostenes
-
-#include<iostream>
-#include<algorithm>
-#include<vector>
-#include<set>
-#include<iterator>
-//#define int long long
-#define SIZE 100001
+#include <iostream>
+#include <vector>
 using namespace std;
-bool prime[SIZE];
+#define SIZE 100005
+#define int long long
+#define pb push_back
 
-void seive(){
-	long long i,j;
-	
-	prime[0]=prime[1]=0;
-	for(long long i=2;i<=SIZE;i++){
-		prime[i]=1;
-	}
-	
-	for(i=2;i<=SIZE;i++){
-		if(prime[i]){
-			for(j=i*i;j<=SIZE;j+=i){
-				prime[j]=0;
-			}
-		}
-	}
+vector<int> allPrimes;
 
+void seive() { 
+    vector<bool> isPrime(SIZE, true);
+    isPrime[0] = isPrime[1] = false;
+    
+    for (int i = 2; i < SIZE; i++) {
+        if (isPrime[i]) {
+            for (int j = i * i; j < SIZE; j += i) {
+                isPrime[j] = 0;
+            }
+        }
+    }
+
+    for (int i = 2; i < SIZE; i++) {
+        if (isPrime[i]) {
+            allPrimes.pb(i);
+        }
+    }
 }
- 
-int main() 
-{
-	seive();
- 	
- 	for(long long i=0;i<=100;i++){
- 		if(prime[i]){
- 			cout<<i<<" ";
-		 }
-	 }
-	 
-  	
-   
 
-	return 0;
+signed main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    seive();
+
+    for (int i : allPrimes) {
+        cout << i << " ";
+    }
+
+    return 0;
 }
